@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-e
+
 // get all expenses
 router.get('/', async (req, res) => {
   const expenses = await Expense.findAll();
