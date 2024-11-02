@@ -51,13 +51,12 @@ const ExpenseForm: React.FC = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="p-3 border rounded shadow">
-      <h3 className="mb-4">Add Expense</h3>
+    <Form onSubmit={handleSubmit} className="p-3 border rounded shadow w-100 mx-auto mt-4" style={{ maxWidth: '600px' }}>
 
-      {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+      {errorMessage && <Alert variant="danger" className="text-center">{errorMessage}</Alert>}
 
       <Row className="mb-3">
-        <Col md={3}>
+        <Col xs={12} sm={4}>
           <Form.Group controlId="amount">
             <Form.Label>Amount</Form.Label>
             <Form.Control
@@ -71,7 +70,7 @@ const ExpenseForm: React.FC = () => {
           </Form.Group>
         </Col>
 
-        <Col md={3}>
+        <Col xs={12} sm={4}>
           <Form.Group controlId="categoryId">
             <Form.Label>Category</Form.Label>
             <Form.Control
@@ -90,7 +89,7 @@ const ExpenseForm: React.FC = () => {
           </Form.Group>
         </Col>
 
-        <Col md={3}>
+        <Col xs={12} sm={4}>
           <Form.Group controlId="date">
             <Form.Label>Date</Form.Label>
             <Form.Control
@@ -101,8 +100,10 @@ const ExpenseForm: React.FC = () => {
             />
           </Form.Group>
         </Col>
+      </Row>
 
-        <Col md={3}>
+      <Row className="mb-3">
+        <Col xs={12}>
           <Form.Group controlId="description">
             <Form.Label>Description (optional)</Form.Label>
             <Form.Control
@@ -110,12 +111,13 @@ const ExpenseForm: React.FC = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Description (optional)"
+              rows={3}
             />
           </Form.Group>
         </Col>
       </Row>
 
-      <Button variant="primary" type="submit" className="mt-3">
+      <Button variant="primary" type="submit" className="w-100 mt-3">
         Add Expense
       </Button>
     </Form>

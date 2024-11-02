@@ -3,7 +3,13 @@ import { PieChart, Pie, Tooltip, Cell } from 'recharts';
 import { useExpenseContext } from '../context/ExpenseContext';
 import { useCategoryContext } from '../context/CategoryContext';
 
-const ExpenseChart: React.FC = () => {
+interface ExpenseChartProps {
+  selectedCategory: number | null;
+  startDate: string;
+  endDate: string;
+}
+
+const ExpenseChart: React.FC<ExpenseChartProps> = ({ selectedCategory, startDate, endDate }) => {
   const { expenses, fetchExpenses } = useExpenseContext();
   const { categories, fetchCategories } = useCategoryContext();
 
@@ -20,25 +26,33 @@ const ExpenseChart: React.FC = () => {
   useEffect(() => {
     const totals: { [key: string]: number } = {};
 
-    expenses.forEach(expense => {
+    // Filtra las expenses en función de los filtros seleccionados
+    const filteredExpenses = expenses.filter(expense => {
+      const isCategoryMatch = selectedCategory ? expense.category_id === selectedCategory : true;
+      const isDateMatch = startDate && endDate ? 
+        new Date(expense.date) >= new Date(startDate) && new Date(expense.date) <= new Date(endDate) 
+        : true;
+      return isCategoryMatch && isDateMatch;
+    });
+
+    filteredExpenses.forEach(expense => {
       const categoryKey = String(expense.category_id);
       totals[categoryKey] = (totals[categoryKey] || 0) + expense.amount;
     });
 
     setTotalByCategory(totals);
-  }, [expenses]);
+  }, [expenses, selectedCategory, startDate, endDate]);
 
   const chartData = categories.map(category => ({
     name: category.name,
     amount: totalByCategory[String(category.id)] || 0,
-  })).filter(data => data.amount > 0); // Filter out categories with 0 amount
+  })).filter(data => data.amount > 0);
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF69B4'];
 
   return (
     <div className="container mt-4">
-      <h3 className="mb-3">Expenses by Category Chart</h3>
-      <div className="card">
+      <div>
         <div className="card-body">
           <PieChart width={300} height={300}>
             <Pie

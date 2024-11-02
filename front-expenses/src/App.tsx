@@ -12,6 +12,11 @@ const App: React.FC = () => {
   const [isExpenseModalOpen, setExpenseModalOpen] = useState(false);
   const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
 
+  // Estado para los filtros
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+
   const openExpenseModal = () => setExpenseModalOpen(true);
   const closeExpenseModal = () => setExpenseModalOpen(false);
   const openCategoryModal = () => setCategoryModalOpen(true);
@@ -19,7 +24,7 @@ const App: React.FC = () => {
 
   return (
     <AppProvider>
-      <div className="App container">
+      <div className="App container p-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <button className="btn btn-primary" onClick={openExpenseModal}>
             Add Expense
@@ -33,12 +38,27 @@ const App: React.FC = () => {
         <div className="row mb-4">
           <div className="col-12 col-md-4">
             <div className="d-flex flex-column">
-              <ExpenseSummary />
-              <ExpenseChart />
+              <ExpenseSummary 
+                selectedCategory={selectedCategory} 
+                startDate={startDate} 
+                endDate={endDate} 
+              />
+              <ExpenseChart 
+                selectedCategory={selectedCategory} 
+                startDate={startDate} 
+                endDate={endDate} 
+              />
             </div>
           </div>
           <div className="col-12 col-md-8">
-            <ExpenseList />
+            <ExpenseList
+              selectedCategory={selectedCategory}
+              startDate={startDate}
+              endDate={endDate}
+              setSelectedCategory={setSelectedCategory}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+            />
           </div>
         </div>
 

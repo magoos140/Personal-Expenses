@@ -29,13 +29,12 @@ const CategoryForm: React.FC = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="p-3 border rounded shadow">
-      <h3 className="mb-4">Add Category</h3>
+    <Form onSubmit={handleSubmit} className="p-3 border rounded shadow-sm w-100 mx-auto mt-4" style={{ maxWidth: '600px' }}>
 
-      {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+      {errorMessage && <Alert variant="danger" className="text-center">{errorMessage}</Alert>}
 
       <Row className="mb-3">
-        <Col md={8}>
+        <Col xs={12} sm={8}>
           <Form.Group controlId="categoryName">
             <Form.Label>Category Name</Form.Label>
             <Form.Control
@@ -44,12 +43,13 @@ const CategoryForm: React.FC = () => {
               onChange={(e) => setCategoryName(e.target.value)}
               placeholder="Enter category name"
               required
+              className="mb-2 mb-sm-0"
             />
           </Form.Group>
         </Col>
 
-        <Col md={4}>
-          <Button variant="primary" type="submit" className="mt-4">
+        <Col xs={12} sm={4} className="d-flex justify-content-sm-end align-items-end">
+          <Button variant="primary" type="submit" className="w-100">
             Add Category
           </Button>
         </Col>

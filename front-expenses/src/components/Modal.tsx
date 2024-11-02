@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface ModalProps {
   title: string;
@@ -8,27 +8,58 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ title, isOpen, onClose, children }) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = ''; 
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="modal fade show d-block" tabIndex={-1} role="dialog">
-      <div className="modal-dialog modal-lg" role="document"> {/* Aumenta el tamaño del modal */}
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">{title}</h5>
-            <button type="button" className="close" onClick={onClose} style={{ marginLeft: 'auto' }}>
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div className="modal-body">
-            {children}
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
+    <>
+      <div
+        className="modal-overlay"
+        onClick={onClose} 
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 1040,
+        }}
+      />
+
+      <div
+        className="modal fade show d-block"
+        tabIndex={-1}
+        role="dialog"
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 1050,
+        }}
+      >
+        <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header d-flex justify-content-between align-items-center">
+              <h5 className="modal-title">{title}</h5>
+              <button type="button" className="btn-close" onClick={onClose} aria-label="Close" />
+            </div>
+            <div className="modal-body">{children}</div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
