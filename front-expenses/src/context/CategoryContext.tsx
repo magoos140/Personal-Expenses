@@ -15,10 +15,11 @@ const CategoryContext = createContext<CategoryContextType | undefined>(undefined
 
 export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/categories');
+      const response = await fetch(`${apiUrl}/api/categories`);
       if (!response.ok) {
         throw new Error('Error fetching categories');
       }
@@ -31,7 +32,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const addCategory = async (name: string) => {
     try {
-      const response = await fetch('http://localhost:3001/api/categories', {
+      const response = await fetch(`${apiUrl}/api/categories`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

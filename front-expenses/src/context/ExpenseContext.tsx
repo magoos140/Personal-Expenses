@@ -20,10 +20,11 @@ const ExpenseContext = createContext<ExpenseContextType | undefined>(undefined);
 
 export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const fetchExpenses = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/expenses');
+      const response = await fetch(`${apiUrl}/api/expenses`);
       if (response.ok) {
         const data = await response.json();
         setExpenses(data);
@@ -39,7 +40,7 @@ export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const addExpense = async (expense: Omit<Expense, 'id'>) => {
     try {
-      const response = await fetch('http://localhost:3001/api/expenses', {
+      const response = await fetch(`${apiUrl}/api/expenses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(expense),
@@ -55,7 +56,7 @@ export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const deleteExpense = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/expenses/${id}`, { method: 'DELETE' });
+      const response = await fetch(`${apiUrl}/api/expenses/${id}`, { method: 'DELETE' });
       if (response.ok) {
         setExpenses((prev) => prev.filter((expense) => expense.id !== id));
       }
@@ -66,7 +67,7 @@ export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const editExpense = async (id: string, updatedExpense: Omit<Expense, 'id'>) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/expenses/${id}`, {
+      const response = await fetch(`${apiUrl}/api/expenses/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedExpense),
