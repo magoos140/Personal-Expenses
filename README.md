@@ -64,4 +64,4 @@ Ejecute el comando npm start
 ```
 npm start
 ```
-si todo sale bien deberia abrirse su proyecto en el localhost:3000 del navegador
+si todo sale bien deberia abrirse su proyecto en el  http://localhost:3000 del navegador
